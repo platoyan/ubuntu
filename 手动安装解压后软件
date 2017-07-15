@@ -1,0 +1,9 @@
+tar vxjf sublime_text_3_build_3047_x64.tar.bz2
+下载完成后解压获得 sublime_text_3 文件夹，将该文件夹移动到 /opt/ :
+# sudo mv sublime_text_3 /opt/  
+在 /usr/bin/ 下创建链接：
+# sudo ln -s /opt/sublime_text_3/sublime_text /usr/bin/sublime 
+现在你在终端已经可以打开 sublime text 3 :
+# sublime
+当然为了方便我们需要建立一个图标链接：
+# sudo sublime /usr/share/applications/sublime.desktop 
