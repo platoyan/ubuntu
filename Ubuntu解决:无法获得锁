@@ -1,0 +1,68 @@
+apt-get时，
+无法获得锁 /var/lib/apt/lists/lock - open (11: 资源暂时不可用)
+
+无法对目录 /var/lib/apt/lists/ 加锁
+快速找到关于apt-get的那个进程：ps -aux|grep apt-get
+现象一：
+E: 无法获得锁 /var/lib/dpkg/lock – open (11: 资源临时不可用)
+
+E: 无法对管理目录(/var/lib/dpkg/)加锁，是不是另一个包管理程序在使用它？
+
+无法执行其他apt-get命令
+
+解决办法:
+
+第一种(比较暴力)
+
+把lock的文件强行删掉，解决问题：
+
+sudo rm /var/lib/dpkg/lock
+
+或
+
+sudo rm /var/lib/apt/lists/lock
+
+第二种
+
+ps aux 列出当前进程列表 找到 apt-get 那个被lock住的进程记下PID
+
+sudo kill PID 即可
+
+因为linux只允许开一个apt-get，当然apt-get和新立得也是只能同时开一个
+
+现象二：
+
+E: 无法获得锁 /var/cache/apt/archives/lock – open (11 资源临时不可用)
+
+E: 无法锁定下载目录
+
+解决方法：
+
+方法一
+
+命令：ps -aux
+
+列出进程
+
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+
+root 1 0.0 0.0 4020 880 ? Ss 15:27 0:00 /sbin/init
+
+root 2 0.0 0.0 0 0 ? S< 15:27 0:00 [kthreadd]
+
+……………………………………………………………………………………………………………………..
+
+找到最后一列以apt-get 开头的进程
+
+命令：sudo kill 该进程的PID
+
+方法二：
+
+sudo rm /var/cache/apt/archives/lock
+
+sudo rm /var/lib/dpkg/lock
+
+作者：程序猿Timothy
+链接：http://www.jianshu.com/p/8768e5bccfa8
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
